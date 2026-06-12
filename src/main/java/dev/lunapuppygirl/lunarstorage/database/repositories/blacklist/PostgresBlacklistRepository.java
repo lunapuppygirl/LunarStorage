@@ -26,14 +26,6 @@ public class PostgresBlacklistRepository extends Repository<BlacklistEntry, UUID
         );
     }
 
-    public Optional<BlacklistEntry> get(String ip) {
-        return executeQuerySingle(
-                "SELECT * FROM blacklist WHERE ?::inet <<= ip_range LIMIT 1",
-                pstmt -> pstmt.setObject(1, ip),
-                this::map
-        );
-    }
-
     @Override
     public void create(BlacklistEntry entity) {
         executeUpdate(

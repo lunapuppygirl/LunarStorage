@@ -28,50 +28,6 @@ public class MySqlBlacklistRepository extends Repository<BlacklistEntry, UUID> {
         );
     }
 
-    public Optional<BlacklistEntry> get(String ip) {
-        List<BlacklistEntry> entries = getAll(Integer.MAX_VALUE);
-
-        try {
-            InetAddress target = InetAddress.getByName(ip);
-
-            return entries.stream()
-                    .filter(entry -> isInRange(target, entry.getIpRange()))
-                    .findFirst();
-        } catch (UnknownHostException e) {
-            logger.error("Error while getting blacklist entry: ", e);
-        }
-
-        return Optional.empty();
-    }
-
-    private boolean isInRange(InetAddress ip, String cidr) {
-        try {
-            String[] parts = cidr.split("/");
-            InetAddress network = InetAddress.getByName(parts[0]);
-            int prefixLength = Integer.parseInt(parts[1]);
-
-            byte[] ipBytes = ip.getAddress();
-            byte[] networkBytes = network.getAddress();
-
-            if (ipBytes.length != networkBytes.length) return false;
-
-            int fullBytes = prefixLength / 8;
-            int remainingBits = prefixLength % 8;
-
-            for (int i = 0; i < fullBytes; i++) {
-                if (ipBytes[i] != networkBytes[i]) return false;
-            }
-            if (remainingBits > 0) {
-                int mask = 0xFF & (0xFF << (8 - remainingBits));
-                return (ipBytes[fullBytes] & mask) == (networkBytes[fullBytes] & mask);
-            }
-            return true;
-        } catch (UnknownHostException e) {
-            logger.error("Error while checking for ip in range: ", e);
-        }
-        return true;
-    }
-
     @Override
     public void create(BlacklistEntry entity) {
         executeUpdate(
