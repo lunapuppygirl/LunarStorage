@@ -42,6 +42,14 @@ dependencies {
     testAnnotationProcessor("org.projectlombok:lombok")
 }
 
+tasks.jar {
+    manifest {
+        attributes(
+            "Main-Class" to "dev.lunapuppygirl.lunarstorage.LunarStorageApplication"
+        )
+    }
+}
+
 tasks.withType<Test> {
     useJUnitPlatform()
 }
