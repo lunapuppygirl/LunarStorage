@@ -34,7 +34,7 @@ public class PostgreSqlDatabaseImpl extends AbstractDatabase {
                 "CREATE TABLE IF NOT EXISTS files (uuid UUID PRIMARY KEY, name TEXT, folder_id INT REFERENCES folders(id) ON DELETE SET NULL, permission_level INT NOT NULL DEFAULT 0);",
                 "CREATE TABLE IF NOT EXISTS blacklist (uuid UUID PRIMARY KEY, ip_range CIDR NOT NULL, reason TEXT NOT NULL);",
 
-                "INSERT INTO folders VALUES (1, NULL, '/', 0);"
+                "INSERT INTO folders VALUES (1, NULL, '/', 0) ON CONFLICT DO NOTHING;"
         };
 
         for (String query : queries) {

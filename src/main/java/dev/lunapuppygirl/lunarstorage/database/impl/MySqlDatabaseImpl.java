@@ -34,7 +34,7 @@ public class MySqlDatabaseImpl extends AbstractDatabase {
                 "CREATE TABLE IF NOT EXISTS files (uuid CHAR(36) PRIMARY KEY, name VARCHAR(255), folder_id INT REFERENCES folders(id) ON DELETE SET NULL, perm_level INT NOT NULL DEFAULT 0);",
                 "CREATE TABLE IF NOT EXISTS blacklist (uuid CHAR(36) AUTO_INCREMENT PRIMARY KEY, ip_range VARCHAR(50) NOT NULL, reason TEXT NOT NULL);",
 
-                "INSERT INTO folders VALUES (1, NULL, '/', 0);"
+                "INSERT IGNORE INTO folders VALUES (1, NULL, '/', 0);"
         };
 
         for (String query : queries) {
