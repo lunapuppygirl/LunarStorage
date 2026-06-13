@@ -1,4 +1,6 @@
-const baseUrl = "http://localhost:8080";
+const baseUrl = document.querySelector('meta[name="base-url"]')
+    ?.getAttribute('content')
+    ?.replace(/\/$/, '');
 let stopped = false;
 
 async function solveChallenge(challenge, difficulty, onProgress, isStopped) {
