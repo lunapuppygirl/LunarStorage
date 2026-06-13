@@ -16,3 +16,4 @@ Personal website for storing files with permission levels and etc.
 
 ## Cool sources
 Integrating Tailwind CSS with Spring: https://www.danvega.dev/blog/spring-boot-tailwind
+Proof of Work captcha: https://webdecoy.com/blog/proof-of-work-captcha-hashcash-stop-bots

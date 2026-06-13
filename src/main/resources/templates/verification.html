@@ -3,11 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <script th:src="@{/js/verification.js}"></script>
     <link rel="stylesheet" th:href="@{/css/main.css}">
     <title>LunarStorage | Verification</title>
 </head>
-<body>
-    <h1>meow verifying..</h1>
+<body class="min-h-screen min-w-screen bg-zinc-900 text-gray-200 flex flex-col">
+    <header class="w-full">
+        <h1 class="text-center text-2xl mt-3">
+            <span class="text-shimmer">Lunar</span><span class="text-gray-200">Storage</span>
+        </h1>
+    </header>
+
+    <main class="flex-1 flex flex-col items-center justify-center">
+        <div>
+            <p class="text-[15px] text-gray-400" id="pow-status">loading..</p>
+        </div>
+        <div id="progress" class="w-60 bg-gray-800 mt-2 mb-2">
+            <div id="progress-bar" class="w-[1%] h-1 bg-purple-600"></div>
+        </div>
+        <div class="flex flex-row justify-around w-60 text-[12px] text-gray-500">
+            <p id="pow-method">JS</p>
+            <p>SHA-256</p>
+            <p id="pow-speed">0.0 H/s</p>
+        </div>
+    </main>
+
+    <footer class="w-full p-4 text-center text-gray-500 text-sm ">
+        <p>&copy; <span th:text="${year}"></span> LunarStorage</p>
+    </footer>
 </body>
 </html>
