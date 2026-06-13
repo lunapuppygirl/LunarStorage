@@ -5,6 +5,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 .env
+src/main/frontend/node_modules/
+# Generated CSS file from src/main/frontend/styles.css
+src/main/resources/static/css/main.css
 
 ### STS ###
 .apt_generated

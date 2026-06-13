@@ -1,3 +1,5 @@
+import com.github.gradle.node.npm.task.NpmTask
+
 plugins {
     java
     id("org.springframework.boot") version "4.1.0"
@@ -13,6 +15,12 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+}
+
+node {
+    version = "22.15.0"
+    npmVersion = "10.9.2"
+    download = true
 }
 
 repositories {
@@ -51,6 +59,22 @@ tasks.jar {
             "Main-Class" to "dev.lunapuppygirl.lunarstorage.LunarStorageApplication"
         )
     }
+}
+
+tasks.register<NpmTask>("tailwindBuild") {
+    description = "Build CSS file"
+    args = listOf("run", "tw:build")
+    workingDir = file("src/main/frontend")
+}
+
+tasks.register<NpmTask>("tailwindWatch") {
+    description = "Build CSS file every change"
+    args = listOf("run", "tw:watch")
+    workingDir = file("src/main/frontend")
+}
+
+tasks.named("processResources") {
+    dependsOn("tailwindBuild")
 }
 
 tasks.withType<Test> {
