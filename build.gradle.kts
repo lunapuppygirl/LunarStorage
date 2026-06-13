@@ -1,3 +1,4 @@
+import com.github.gradle.node.npm.task.NpmInstallTask
 import com.github.gradle.node.npm.task.NpmTask
 
 plugins {
@@ -64,10 +65,15 @@ tasks.jar {
     }
 }
 
+tasks.named<NpmInstallTask>("npmInstall") {
+    workingDir = file("src/main/frontend")
+}
+
 tasks.register<NpmTask>("tailwindBuild") {
     description = "Build CSS file"
     args = listOf("run", "tw:build")
     workingDir = file("src/main/frontend")
+    dependsOn("npmInstall")
 }
 
 tasks.register<NpmTask>("tailwindWatch") {
