@@ -29,7 +29,7 @@ public class PostgreSqlDatabaseImpl extends AbstractDatabase {
 
         logger.info("Setting up tables..");
         String[] queries = {
-                "CREATE TABLE IF NOT EXISTS users (uuid UUID PRIMARY KEY, discord_id BIGINT UNIQUE NOT NULL, discord_username TEXT NOT NULL, permission_level INT NOT NULL DEFALT 0, last_ip INET NOT NULL);",
+                "CREATE TABLE IF NOT EXISTS users (uuid UUID PRIMARY KEY, discord_id BIGINT UNIQUE NOT NULL, discord_username TEXT NOT NULL, permission_level INT NOT NULL DEFAULT 0, last_ip INET NOT NULL);",
                 "CREATE TABLE IF NOT EXISTS folders (id SERIAL PRIMARY KEY, parent_id INT REFERENCES folders(id) ON DELETE CASCADE, name TEXT NOT NULL, permission_level INT NOT NULL DEFAULT 0, UNIQUE(parent_id, name));",
                 "CREATE TABLE IF NOT EXISTS files (uuid UUID PRIMARY KEY, name TEXT, folder_id INT REFERENCES folders(id) ON DELETE SET NULL, permission_level INT NOT NULL DEFAULT 0);",
                 "CREATE TABLE IF NOT EXISTS blacklist (uuid UUID PRIMARY KEY, ip_range CIDR NOT NULL, reason TEXT NOT NULL);",
