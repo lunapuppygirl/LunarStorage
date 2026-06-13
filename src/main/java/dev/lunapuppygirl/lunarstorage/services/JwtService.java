@@ -1,23 +1,22 @@
-package dev.lunapuppygirl.lunarstorage.utils;
+package dev.lunapuppygirl.lunarstorage.services;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.UUID;
 
-@Component
-public class JwtUtils {
+@Service
+public class JwtService {
     private final String jwtSecret;
 
-    public JwtUtils(@Value("${app.secrets.tokens}") String secret) {
+    public JwtService(@Value("${app.secrets.tokens}") String secret) {
         this.jwtSecret = secret;
     }
 
