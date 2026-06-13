@@ -19,10 +19,10 @@ public class SecurityConfig {
                         .requestMatchers("/dashboard/**").authenticated()
                         .anyRequest().permitAll()
                 )
-                .oauth2Login(oauth -> oauth
+                /*.oauth2Login(oauth -> oauth
                         .defaultSuccessUrl("/", true)
                         .failureUrl("/login?error")
-                )
+                )*/
                 .logout(logout -> logout
                         .logoutSuccessUrl("/")
                 )
