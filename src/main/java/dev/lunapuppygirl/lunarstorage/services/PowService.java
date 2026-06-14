@@ -27,7 +27,7 @@ public class PowService {
     }
 
     public Challenge createChallenge() {
-        Challenge ch = new Challenge(20); //todo: implement a config to change this in dashboard
+        Challenge ch = new Challenge(16); //todo: implement a config to change this in dashboard
         pendingChallenges.put(ch.getId(), ch);
         return ch;
     }
