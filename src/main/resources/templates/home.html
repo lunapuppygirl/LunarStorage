@@ -2,9 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LunarStorage</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
-<body>
-    <h1>Hello World!</h1>
+<body class="min-h-screen min-w-screen bg-zinc-900 text-gray-200 flex flex-col">
+    <header class="flex flex-col mt-20 rounded-lg justify-center border-2 w-[75%] sm:w-[50%] p-2 mx-auto"
+            th:classappend="${announcement.visible ? 'flex' : 'hidden'}"
+            th:style="'border-color: ' + ${announcement.level.hex} + '; background-color: ' + ${announcement.level.hex} + '20'">
+        <div class="w-full flex-row">
+            <i class="fa-solid fa-bullhorn sm:scale-150 scale-100" th:style="'color: ' + ${announcement.level.hex}"></i>
+            <span th:text="${announcement.title}" class="font-bold sm:text-xl text-lg"></span>
+        </div>
+        <hr class="my-2 border" th:style="'border-color: ' + ${announcement.level.hex}">
+        <p class="sm:text-lg text-xs" th:text="${announcement.content}"></p>
+    </header>
+
+    <main class="flex-1 flex flex-col justify-center items-center">
+        <h1 class="text-center text-1xl sm:text-3xl">
+            <span class="text-shimmer">Lunar</span><span>Storage</span>
+        </h1>
+        <p class="text-gray-400 text-xs sm:text-sm">Made by <a class="text-shimmer" href="https://lunapuppygirl.dev">LunaPuppyGirl</a></p>
+        <div class="flex justify-around flex-row mt-5 sm:w-[15%] w-[50%]">
+            <a class="p-1.5 sm:p-2.5 text-xs sm:text-base bg-[#0d1117]" href="https://github.com/lunapuppygirl/LunarStorage">
+                <i class="fa-brands fa-github mr-1"></i><span>GitHub</span>
+            </a>
+            <a class="p-1.5 sm:p-2.5 text-xs sm:text-base bg-purple-400" th:href="@{/storage/}">
+                <i class="fa-solid fa-folder mr-1"></i><span>Storage</span>
+            </a>
+        </div>
+    </main>
+    <footer class="w-full p-4 text-center text-gray-500 text-sm ">
+        <p>&copy; <span th:text="${year}"></span> LunarStorage</p>
+    </footer>
 </body>
 </html>
