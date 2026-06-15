@@ -2,21 +2,28 @@ package dev.lunapuppygirl.lunarstorage.database.services;
 
 import dev.lunapuppygirl.lunarstorage.database.repositories.Repository;
 import dev.lunapuppygirl.lunarstorage.database.repositories.users.User;
+import dev.lunapuppygirl.lunarstorage.services.JwtService;
 import io.jsonwebtoken.Claims;
 import jakarta.annotation.Nullable;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class UserService {
     private final Repository<User, UUID> userRepository;
+    private final JwtService jwtService;
 
-    public UserService(Repository<User, UUID> userRepository) {
+    public UserService(Repository<User, UUID> userRepository, JwtService jwtService) {
         this.userRepository = userRepository;
+        this.jwtService = jwtService;
     }
 
     public @Nullable User getByUuid(UUID uuid) {
@@ -27,6 +34,30 @@ public class UserService {
 
     public User getFromToken(Claims claims) {
         return getByUuid(UUID.fromString(claims.getId()));
+    }
+
+    public @Nullable User getFromRequest(HttpServletRequest request) {
+        if (request.getCookies() == null) return null;
+
+        String token = Arrays.stream(request.getCookies())
+                .filter(c -> c.getName().equals("token"))
+                .findFirst()
+                .map(Cookie::getValue)
+                .orElse(null);
+
+        if (token != null && !token.isEmpty()) {
+            Claims claims = jwtService.validateToken(token);
+            if (claims == null) return null;
+
+            Date now = new Date();
+            Date expiration = claims.getExpiration();
+
+            if (expiration.after(now)) return null;
+
+            return getFromToken(claims);
+        }
+
+        return null;
     }
 
     public void createUser(UUID uuid, String username, long discordId, int permissionLevel, InetAddress lastIp) {

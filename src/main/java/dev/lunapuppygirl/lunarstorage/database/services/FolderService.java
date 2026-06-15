@@ -2,6 +2,7 @@ package dev.lunapuppygirl.lunarstorage.database.services;
 
 import dev.lunapuppygirl.lunarstorage.database.repositories.Repository;
 import dev.lunapuppygirl.lunarstorage.database.repositories.folders.Folder;
+import jakarta.annotation.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,9 +17,21 @@ public class FolderService {
         this.folderRepository = folderRepository;
     }
 
-    public Folder getById(int id) {
+    public @Nullable Folder getById(int id) {
         Optional<Folder> folder = folderRepository.get(id);
         return folder.orElse(null);
+    }
+
+    public @Nullable Folder getByName(String name) {
+        List<Folder> folders = folderRepository.getAll(Integer.MAX_VALUE);
+
+        return folders.stream()
+                .filter(f -> f.getName().equals(name))
+                .findFirst().orElse(null);
+    }
+
+    public List<Folder> getAll() {
+        return folderRepository.getAll(Integer.MAX_VALUE);
     }
 
     public List<Folder> getFoldersInFolder(int id) {
@@ -26,6 +39,7 @@ public class FolderService {
 
         return folders.stream()
                 .filter(f -> f.getParentId() == id)
+                .filter(f -> f.getId() != 0)
                 .toList();
     }
 
