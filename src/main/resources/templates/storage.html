@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LunarStorage</title>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <script src="https://unpkg.com/lucide@1.18.0/dist/umd/lucide.min.js" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => lucide.createIcons());
+    </script>
+</head>
+<body class="min-h-screen min-w-screen bg-zinc-900 text-gray-200 flex flex-col">
+    <header class="w-full grid grid-cols-3 items-center px-4 py-2">
+        <!-- pro fix -->
+        <div></div>
+        <h1 class="text-2xl text-center">
+            <span class="text-shimmer">Lunar</span><span>Storage</span>
+        </h1>
+        <a class="text-right" th:href="${user == null ? '/login' : (user.permissionLevel > 1000 ? '/dashboard' : '/storage')}" th:text="${user == null ? 'Not logged in' : user.discordUsername}"></a>
+    </header>
+
+    <main class="flex-1 flex flex-col sm:ml-20 ml-5 sm:mt-20 mt-5 sm:mr-20 mr-5">
+        <div class="bg-zinc-950 p-2 sm:w-[20%] w-[80%]">
+            <p th:text="'Index of ' + ${path.startsWith('/') ? path : '/' + path}"></p>
+        </div>
+
+        <div class="bg-zinc-950 p-2 sm:w-[40%] w-[80%] mt-5">
+            <div th:if="${path != null && !path.isEmpty() && !path.equals('/')}" class="flex flex-row w-full">
+                <i data-lucide="undo-2" class="mr-1"></i>
+                <span><a th:href="${'/storage/' + parentPath}">..&nbsp;</a></span>
+            </div>
+            <div th:each="folder : ${folders}" class="flex flex-row w-full">
+                <i data-lucide="folder" class="mr-1 text-gray-400" th:if="${folder.value}"></i>
+                <i data-lucide="octagon-x" class="mr-1 text-red-700" th:if="${!folder.value}"></i>
+                <span><a th:href="${folder.value ? '/storage/' + (path.equals('/') ? '' : (path.startsWith('/') ? path.substring(1) : path) + '/') + folder.key.name : '/login'}" th:text="${folder.key.name}"></a></span>
+            </div>
+            <div th:each="file : ${files}" class="flex flex-row w-full">
+                <i data-lucide="file" class="mr-1 text-gray-400" th:if="${file.value}"></i>
+                <i data-lucide="octagon-x" class="mr-1 text-red-700" th:if="${!file.value}"></i>
+                <span><a th:href="${file.value ? '/files/' + file.key.uuid + file.key.name.substring(file.key.name.lastIndexOf('.'), file.key.name.length()) : '/login'}" th:text="${file.key.name}"></a></span>
+            </div>
+        </div>
+    </main>
+
+    <footer class="w-full p-4 text-center text-gray-500 text-sm ">
+        <p>&copy; <span th:text="${year}"></span> LunarStorage</p>
+    </footer>
+</body>
+</html>
