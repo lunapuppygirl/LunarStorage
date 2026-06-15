@@ -62,6 +62,12 @@ function getCsrfHeader() {
     return document.querySelector('meta[name="_csrf_header"]')?.getAttribute('content') ?? 'X-XSRF-TOKEN';
 }
 
+function formatSpeed(hps) {
+    if (hps >= 1_000_000) return (hps / 1_000_000).toFixed(1) + " MH/s";
+    if (hps >= 1_000) return (hps / 1_000).toFixed(1) + " kH/s";
+    return hps.toFixed(0) + " H/s";
+}
+
 async function init() {
     const statusText = document.getElementById("pow-status")
     const progressBar = document.getElementById("progress-bar")
@@ -96,7 +102,7 @@ async function init() {
 
     const nonce = await solveChallenge(challenge.prefix, challenge.difficulty, (percent, speed) => {
         progressBar.style.width = `${percent}%`;
-        document.getElementById('pow-speed').textContent = `${speed.toFixed(0)} H/s`;
+        document.getElementById('pow-speed').textContent = formatSpeed(speed);
         statusText.textContent = `verifying..`;
 
         if (new Date() > challenge.expiresAt) {
