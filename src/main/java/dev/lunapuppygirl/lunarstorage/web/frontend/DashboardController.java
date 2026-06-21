@@ -50,7 +50,7 @@ public class DashboardController {
     }
 
     @GetMapping(path = {"", "/", "/main"})
-    @PreAuthorize("hasPermissionLevel(@securityConfig.minDashboardLevel)")
+    @PreAuthorize("@permissions.hasPermissionLevel(@securityConfig.minDashboardLevel)")
     public String mainDashboard(HttpServletRequest req, HttpServletResponse resp, Model model) {
         model.addAttribute("year", Year.now().getValue());
 

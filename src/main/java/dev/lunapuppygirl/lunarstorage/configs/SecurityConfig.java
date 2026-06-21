@@ -1,7 +1,6 @@
 package dev.lunapuppygirl.lunarstorage.configs;
 
 import dev.lunapuppygirl.lunarstorage.managers.JsonFileManager;
-import dev.lunapuppygirl.lunarstorage.security.AppMethodSecurityExpressionHandler;
 import dev.lunapuppygirl.lunarstorage.web.filters.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,11 +48,6 @@ public class SecurityConfig {
         HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
         repository.setSessionAttributeName("_csrf");
         return repository;
-    }
-
-    @Bean
-    public static MethodSecurityExpressionHandler methodSecurityExpressionHandler() {
-        return new AppMethodSecurityExpressionHandler();
     }
 
     public int getMinDashboardLevel() {
