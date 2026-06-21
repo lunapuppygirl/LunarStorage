@@ -50,21 +50,21 @@ public class DashboardController {
     }
 
     @GetMapping(path = {"", "/", "/main"})
-//    @PreAuthorize("hasPermissionLevel(@securityConfig.minDashboardLevel)")
+    @PreAuthorize("hasPermissionLevel(@securityConfig.minDashboardLevel)")
     public String mainDashboard(HttpServletRequest req, HttpServletResponse resp, Model model) {
         model.addAttribute("year", Year.now().getValue());
 
         if (!powService.isAfterVerification(req)) return "verification";
 
-        // User user = userService.getFromRequest(req);
-        // if (user == null) return "redirect:/login";
+        User user = userService.getFromRequest(req);
+        if (user == null) return "redirect:/login";
 
-        User user;
+        /*User user;
         try {
             user = new User(UUID.randomUUID(), 0, "devUser", 1000, InetAddress.getByName("1.1.1.1"));
         } catch (UnknownHostException e) {
             user = new User(UUID.randomUUID(), 0, "devUser", 1000, null);
-        }
+        }*/
 
         Map<Integer, Integer> lastWeek = jsonFileManager.getMap(
                 "requests.last_week", jsonFileManager.getStatsFile(), Integer.class, Integer.class);
