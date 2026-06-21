@@ -25,7 +25,7 @@
         <div class="h-1 rounded-4xl w-[40%] sm:w-[10%] bg-purple-500 my-4"></div>
 
         <div class="sm:w-[20%] w-[50%] flex flex-col">
-            <a class="bg-[#5865F2] w-full h-10 flex items-center justify-center" th:href="${discord_url}" th:if="${discord_enabled}">
+            <a class="bg-[#5865F2] w-full h-10 flex items-center justify-center" th:href="@{/oauth2/authorization/discord}" th:if="${discord_enabled}">
                 <img th:src="@{/assets/discord_logo_white.svg}" alt="discord logo" class="h-5 w-auto" />
             </a>
         </div>

@@ -1,6 +1,7 @@
 package dev.lunapuppygirl.lunarstorage.configs;
 
 import dev.lunapuppygirl.lunarstorage.managers.JsonFileManager;
+import dev.lunapuppygirl.lunarstorage.oauth2.OAuth2LoginSuccessHandler;
 import dev.lunapuppygirl.lunarstorage.web.filters.JwtAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +26,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthFilter jwtAuthFilter, OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().permitAll()
@@ -33,6 +34,7 @@ public class SecurityConfig {
                 .oauth2Login(oauth -> oauth
                         .defaultSuccessUrl("/", true)
                         .loginPage("/login")
+                        .successHandler(oAuth2LoginSuccessHandler)
                 )
                 .logout(logout -> logout
                         .logoutSuccessUrl("/")

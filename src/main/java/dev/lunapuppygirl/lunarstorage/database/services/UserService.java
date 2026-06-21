@@ -57,7 +57,7 @@ public class UserService {
             Date now = new Date();
             Date expiration = claims.getExpiration();
 
-            if (expiration.after(now)) return null;
+            if (expiration.before(now)) return null;
 
             return getFromToken(claims);
         }

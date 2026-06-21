@@ -34,7 +34,6 @@ class LoginController {
 
 
         model.addAttribute("discord_enabled", jsonFileManager.getBoolean("login.discord.enabled", jsonFileManager.getConfigFile(), true));
-        model.addAttribute("discord_url", "https://discord.com/oauth2/authorize?client_id=%s&response_type=code&redirect_uri=%s&scope=identify+email".formatted(clientId, URLEncoder.encode(jsonFileManager.getString("login.main_url", jsonFileManager.getConfigFile(), "https://lunarstorage.lunapuppygirl.dev") + "/login/oauth2/code/discord", StandardCharsets.UTF_8)));
 
         return "login";
     }
