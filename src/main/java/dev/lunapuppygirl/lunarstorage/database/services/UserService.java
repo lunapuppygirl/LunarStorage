@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.net.InetAddress;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -30,6 +27,14 @@ public class UserService {
         Optional<User> user = userRepository.get(uuid);
 
         return user.orElse(null);
+    }
+
+    public @Nullable User getByDiscordId(long discordId) {
+        List<User> user = userRepository.getAll(Integer.MAX_VALUE);
+
+        return user.stream()
+                .filter(u -> u.getDiscordId() == discordId)
+                .findFirst().orElse(null);
     }
 
     public User getFromToken(Claims claims) {
