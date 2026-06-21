@@ -6,6 +6,7 @@ import dev.lunapuppygirl.lunarstorage.database.repositories.users.User;
 import dev.lunapuppygirl.lunarstorage.database.services.FileService;
 import dev.lunapuppygirl.lunarstorage.database.services.FolderService;
 import dev.lunapuppygirl.lunarstorage.database.services.UserService;
+import dev.lunapuppygirl.lunarstorage.managers.JsonFileManager;
 import dev.lunapuppygirl.lunarstorage.services.PowService;
 import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,12 +26,14 @@ class StorageController {
     private final FolderService folderService;
     private final FileService fileService;
     private final UserService userService;
+    private final JsonFileManager jsonFileManager;
 
-    StorageController(PowService powService, FolderService folderService, FileService fileService, UserService userService) {
+    StorageController(PowService powService, FolderService folderService, FileService fileService, UserService userService, JsonFileManager jsonFileManager) {
         this.powService = powService;
         this.folderService = folderService;
         this.fileService = fileService;
         this.userService = userService;
+        this.jsonFileManager = jsonFileManager;
     }
 
     @GetMapping(path = {"/", ""})
@@ -52,6 +55,7 @@ class StorageController {
         model.addAttribute("folders", folders);
         model.addAttribute("path", folder.getName());
         model.addAttribute("user", user);
+        model.addAttribute("minDashboardLevel", jsonFileManager.getInt("admin.dashboard.required_level", jsonFileManager.getConfigFile(), 1000));
 
         return "storage";
     }
