@@ -29,7 +29,12 @@ services:
       - .env
     depends_on:
       - postgres
+    volumes:
+      - lunarstorage_data:/data
+      - lunarstorage_files:/files
 
 volumes:
   pgdata:
   caddy_data:
+  lunarstorage_data:
+  lunarstorage_files:
