@@ -1,5 +1,6 @@
 package dev.lunapuppygirl.lunarstorage.services;
 
+import dev.lunapuppygirl.lunarstorage.managers.JsonFileManager;
 import dev.lunapuppygirl.lunarstorage.utils.MiscUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.Cookie;
@@ -20,14 +21,16 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class PowService {
     private final Map<String, Challenge> pendingChallenges = new ConcurrentHashMap<>();
-    private JwtService jwtService;
+    private final JwtService jwtService;
+    private final JsonFileManager jsonFileManager;
 
-    public PowService(JwtService jwtService) {
+    public PowService(JwtService jwtService, JsonFileManager jsonFileManager) {
         this.jwtService = jwtService;
+        this.jsonFileManager = jsonFileManager;
     }
 
     public Challenge createChallenge() {
-        Challenge ch = new Challenge(16); //todo: implement a config to change this in dashboard
+        Challenge ch = new Challenge(jsonFileManager.getInt("pow.difficulty", jsonFileManager.getConfigFile(), 18));
         pendingChallenges.put(ch.getId(), ch);
         return ch;
     }
@@ -67,6 +70,8 @@ public class PowService {
     }
 
     public boolean isAfterVerification(HttpServletRequest request) {
+        if (!jsonFileManager.getBoolean("pow.enabled", jsonFileManager.getConfigFile(), true)) return true;
+
         if (request.getCookies() == null) return false;
 
         String ip = MiscUtils.getIp(request);
