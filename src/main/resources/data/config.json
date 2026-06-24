@@ -10,6 +10,12 @@
       "enabled": true
     }
   },
+  "announcements": {
+    "visible": false,
+    "level": "LOW",
+    "title": "",
+    "content": ""
+  },
   "admin": {
     "dashboard": {
       "required_level": 1000,
