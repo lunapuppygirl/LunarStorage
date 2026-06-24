@@ -9,6 +9,7 @@
 </head>
 <body class="min-h-screen min-w-screen bg-zinc-900 text-gray-200 flex flex-col">
     <header class="flex flex-col mt-20 rounded-lg justify-center border-2 w-[75%] sm:w-[50%] p-2 mx-auto"
+            th:if="${announcement != null}"
             th:classappend="${announcement.visible ? 'flex' : 'hidden'}"
             th:style="'border-color: ' + ${announcement.level.hex} + '; background-color: ' + ${announcement.level.hex} + '20'">
         <div class="w-full flex-row">
