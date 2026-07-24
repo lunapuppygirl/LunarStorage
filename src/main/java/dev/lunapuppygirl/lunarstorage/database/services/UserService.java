@@ -65,6 +65,10 @@ public class UserService {
         return null;
     }
 
+    public List<User> getAll() {
+        return userRepository.getAll(Integer.MAX_VALUE);
+    }
+
     public void createUser(UUID uuid, String username, long discordId, int permissionLevel, InetAddress lastIp) {
         userRepository.create(new User(uuid, discordId, username, permissionLevel, lastIp));
     }
