@@ -9,6 +9,7 @@ import dev.lunapuppygirl.lunarstorage.managers.JsonFileManager;
 import dev.lunapuppygirl.lunarstorage.services.AnnouncementService;
 import dev.lunapuppygirl.lunarstorage.services.PowService;
 import dev.lunapuppygirl.lunarstorage.utils.MiscUtils;
+import dev.lunapuppygirl.lunarstorage.utils.Pagination;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -59,13 +60,6 @@ public class DashboardController {
         User user = userService.getFromRequest(req);
         if (user == null) return "redirect:/login";
 
-        /*User user;
-        try {
-            user = new User(UUID.randomUUID(), 0, "devUser", 1000, InetAddress.getByName("1.1.1.1"));
-        } catch (UnknownHostException e) {
-            user = new User(UUID.randomUUID(), 0, "devUser", 1000, null);
-        }*/
-
         Map<Integer, Integer> lastWeek = jsonFileManager.getMap(
                 "requests.last_week", jsonFileManager.getStatsFile(), Integer.class, Integer.class);
         Map<Integer, Integer> lastDay = jsonFileManager.getMap(
@@ -80,6 +74,24 @@ public class DashboardController {
         model.addAttribute("user", user);
 
         return "dashboard/main";
+    }
+
+    @GetMapping("/users")
+    @PreAuthorize("@permissions.hasPermissionLevel(@securityConfig.minDashboardLevel) && @permissions.hasPermissionLevel(@securityConfig.minManageUsersLevel)")
+    public String users(HttpServletRequest req, HttpServletResponse resp, Model model) {
+        model.addAttribute("year", Year.now().getValue());
+
+        if (!powService.isAfterVerification(req)) return "verification";
+
+        User user = userService.getFromRequest(req);
+        if (user == null) return "redirect:/login";
+
+        Pagination.PaginatedData<User> users = Pagination.createPaginatedList(userService.getAll(), 20);
+
+        model.addAttribute("user", user);
+        model.addAttribute("pages", users);
+
+        return "dashboard/users";
     }
 
 
