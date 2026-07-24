@@ -8,6 +8,7 @@ build/
 src/main/frontend/node_modules/
 # Generated CSS file from src/main/frontend/styles.css
 src/main/resources/static/css/main.css
+data/
 
 ### STS ###
 .apt_generated
